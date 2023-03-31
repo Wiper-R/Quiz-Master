@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f039f42bb0e87f04181d6891990907f7, type: 3}
-  m_Name: Question 3
+  m_Name: Question 7
   m_EditorClassIdentifier: 
-  question: "\rThe gas usually filled in the electric bulb is"
+  question: Which was the first sound movie of India?
   answers:
-  - nitrogen
-  - hydrogen
-  - oxygen
-  - carbon dioxide
-  correctAnswerIndex: 0
+  - Mughal-E-Azam
+  - Alam Ara
+  - Raja Harishchandra
+  - Barsaat
+  correctAnswerIndex: 1
