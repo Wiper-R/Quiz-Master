@@ -14,7 +14,7 @@ public class Quiz : MonoBehaviour
     [SerializeField] GameObject[] answerButtons;
 
     int correctAnswerIndex;
-    bool hasAnsweredEarly = false;
+    bool hasAnsweredEarly = true;
 
     [Header("Button Colors")]
     [SerializeField] Sprite defaultAnswerSprite;
@@ -23,9 +23,30 @@ public class Quiz : MonoBehaviour
     [Header("Timer")]
     [SerializeField] Image timerImage;
     Timer timer;
-    void Start()
+
+    [Header("Scoring")]
+    [SerializeField] TextMeshProUGUI scoreText;
+    ScoreKeeper scoreKeeper;
+
+    [Header("Progress Bar")]
+    [SerializeField] Slider progressBar;
+
+
+    [HideInInspector()]
+    public bool isComplete;
+
+
+    void Awake()
     {
         timer = FindObjectOfType<Timer>();
+        scoreKeeper = FindObjectOfType<ScoreKeeper>();
+    }
+
+
+    void Start()
+    {
+        progressBar.maxValue = questions.Count;
+        progressBar.value = 0;
     }
 
     void Update()
@@ -34,6 +55,11 @@ public class Quiz : MonoBehaviour
 
         if (timer.loadNextQuestion)
         {
+            if (progressBar.value == progressBar.maxValue)
+            {
+                isComplete = true;
+                return;
+            }
             hasAnsweredEarly = false;
             GetNextQuestion();
             timer.loadNextQuestion = false;
@@ -53,6 +79,7 @@ public class Quiz : MonoBehaviour
         DisplayAnswer(index);
         timer.CancelTimer();
         SetButtonState(false);
+        scoreText.text = "Score: " + scoreKeeper.CalculateScore() + "%";
     }
 
 
@@ -64,6 +91,7 @@ public class Quiz : MonoBehaviour
             questionText.text = "Correct!";
             Image buttonImage = answerButtons[index].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
+            scoreKeeper.IncrementCorrectAnswers();
         }
         else
         {
@@ -73,14 +101,19 @@ public class Quiz : MonoBehaviour
             Image buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
+
+
     }
     void GetNextQuestion()
     {
-        if (questions.Count > 0){
-        SetButtonState(true);
-        SetDefaultButtonSprites();
-        GetRandomQuestion();
-        DisplayQuestion();
+        if (questions.Count > 0)
+        {
+            SetButtonState(true);
+            SetDefaultButtonSprites();
+            GetRandomQuestion();
+            DisplayQuestion();
+            progressBar.value++;
+            scoreKeeper.IncrementQuestionsSeen();
         }
     }
 

@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     public bool loadNextQuestion = false;
     public float fillFraction;
     public bool isAnsweringQuestion = false;
-    float timerValue;
+    float timerValue = 0;
     void Update()
     {
         UpdateTimer();
@@ -37,7 +37,6 @@ public class Timer : MonoBehaviour
                 timerValue = timeToShowCorrectAnswer;
             }
         }
-
         else
         {
             if (timerValue > 0)
@@ -51,9 +50,5 @@ public class Timer : MonoBehaviour
                 loadNextQuestion = true;
             }
         }
-
-
-
-        // Debug.Log(timerValue);
     }
 }
